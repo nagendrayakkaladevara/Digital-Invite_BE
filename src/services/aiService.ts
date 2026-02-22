@@ -1,5 +1,6 @@
 import { GoogleGenAI } from '@google/genai';
 import AIChatHistory, { IAIChatHistory } from '../models/AIChatHistory';
+import { getWeddingSystemPrompt } from '../config/weddingContext';
 
 // Model identifiers - client can send these or the full model IDs
 const GEMINI_MODELS = ['gemini', 'gemini-3-flash-preview'];
@@ -20,10 +21,14 @@ async function getGeminiResponse(question: string): Promise<string> {
   }
 
   const ai = new GoogleGenAI({ apiKey });
+  const systemInstruction = getWeddingSystemPrompt();
 
   const response = await ai.models.generateContent({
     model: 'gemini-3-flash-preview',
     contents: question,
+    config: {
+      systemInstruction,
+    },
   });
 
   return response.text ?? '';
@@ -35,6 +40,8 @@ async function getSarvamResponse(question: string): Promise<string> {
     throw new Error('SARVAM_API_KEY is not configured in environment variables');
   }
 
+  const systemInstruction = getWeddingSystemPrompt();
+
   const response = await fetch('https://api.sarvam.ai/v1/chat/completions', {
     method: 'POST',
     headers: {
@@ -44,6 +51,10 @@ async function getSarvamResponse(question: string): Promise<string> {
     body: JSON.stringify({
       model: 'sarvam-m',
       messages: [
+        {
+          role: 'system' as const,
+          content: systemInstruction,
+        },
         {
           role: 'user' as const,
           content: question,
