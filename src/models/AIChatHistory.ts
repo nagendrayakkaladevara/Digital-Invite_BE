@@ -16,6 +16,9 @@ const AIChatHistorySchema = new Schema<IAIChatHistory>(
   { timestamps: true }
 );
 
+AIChatHistorySchema.index({ createdAt: -1 });
+AIChatHistorySchema.index({ aiModel: 1, createdAt: -1 });
+
 const AIChatHistory: Model<IAIChatHistory> =
   mongoose.models.AIChatHistory ??
   mongoose.model<IAIChatHistory>('AIChatHistory', AIChatHistorySchema);

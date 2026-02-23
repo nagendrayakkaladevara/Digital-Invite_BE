@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"D:\\\\ReactProject\\\\marriage - BE\" && npm install helmet express-rate-limit 2>&1)",
+      "Bash(cd \"D:\\\\ReactProject\\\\marriage - BE\" && npm install --save-dev eslint prettier eslint-config-prettier @typescript-eslint/eslint-plugin @typescript-eslint/parser 2>&1)",
+      "Bash(cd \"D:\\\\ReactProject\\\\marriage - BE\" && npm run type-check 2>&1)",
+      "Bash(cd \"D:\\\\ReactProject\\\\marriage - BE\" && npm run lint 2>&1)"
+    ]
+  }
+}
