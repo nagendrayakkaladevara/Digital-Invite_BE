@@ -27,6 +27,18 @@ app.use(async (_req, _res, next) => {
   }
 });
 
+// Root
+app.get('/', (_req, res) => {
+  res.json({
+    message: 'Marriage API',
+    endpoints: {
+      health: 'GET /health',
+      api: 'GET /api',
+      aiChat: 'POST /api/ai/chat',
+    },
+  });
+});
+
 // Health check
 app.get('/health', async (_req, res) => {
   try {
