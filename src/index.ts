@@ -3,7 +3,7 @@ import app from './app';
 import { connectDB } from './config/db';
 import { validateEnv } from './config/env';
 
-const PORT = process.env.PORT || 5000;
+const PORT = parseInt(process.env.PORT ?? '5000', 10);
 
 // Start server (local development only)
 const startServer = async () => {

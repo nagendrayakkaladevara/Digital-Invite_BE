@@ -13,16 +13,21 @@ interface AIRequestBody {
 }
 
 router.get('/chat', async (req: Request, res: Response) => {
-  const page = Math.max(1, parseInt(req.query.page as string) || 1);
-  const limit = Math.min(50, parseInt(req.query.limit as string) || 20);
-  const [records, total] = await Promise.all([
-    AIChatHistory.find()
-      .sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
-      .limit(limit),
-    AIChatHistory.countDocuments(),
-  ]);
-  res.json({ success: true, data: records, page, limit, total });
+  try {
+    const page = Math.max(1, parseInt(req.query.page as string, 10) || 1);
+    const limit = Math.min(50, parseInt(req.query.limit as string, 10) || 20);
+    const [records, total] = await Promise.all([
+      AIChatHistory.find()
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit),
+      AIChatHistory.countDocuments(),
+    ]);
+    res.json({ success: true, data: records, page, limit, total });
+  } catch (error) {
+    console.error('Chat history error:', error);
+    res.status(500).json({ error: 'Failed to retrieve chat history' });
+  }
 });
 
 router.post('/chat', chatLimiter, async (req: Request, res: Response) => {
@@ -74,10 +79,14 @@ router.post('/chat', chatLimiter, async (req: Request, res: Response) => {
       res.status(400).json({ error: err.message });
       return;
     }
+    if (err.message.includes('timed out')) {
+      res.status(504).json({ error: 'AI service timed out, please try again' });
+      return;
+    }
     console.error('AI chat error:', err);
     res.status(500).json({
       error: 'Failed to get AI response',
-      details: process.env.NODE_ENV === 'development' ? err.message : undefined,
+      details: process.env.NODE_ENV !== 'production' ? err.message : undefined,
     });
   }
 });

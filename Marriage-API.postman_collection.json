@@ -1,0 +1,124 @@
+{
+  "info": {
+    "name": "Marriage API",
+    "description": "API collection for Marriage wedding backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "Feedback",
+      "item": [
+        {
+          "name": "Get Feedback",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/feedback?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feedback"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            },
+            "description": "List feedback for dashboard. Supports pagination."
+          }
+        },
+        {
+          "name": "Post Feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Great wedding! Had a wonderful time.\",\n  \"number\": \"+91 9876543210\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/feedback",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feedback"]
+            },
+            "description": "Submit feedback. Both description and number are optional."
+          }
+        },
+        {
+          "name": "Post Feedback (minimal)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/feedback",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "feedback"]
+            },
+            "description": "Submit feedback with empty body (only createdAt will be saved)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "AI Chat",
+      "item": [
+        {
+          "name": "Post Chat",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"model\": \"gemini\",\n  \"question\": \"What is the wedding date?\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/ai/chat",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ai", "chat"]
+            },
+            "description": "Send a question to AI. Models: gemini, gemini-3-flash-preview, sarvam, sarvam-m"
+          }
+        },
+        {
+          "name": "Get Chat History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/ai/chat?page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "ai", "chat"],
+              "query": [
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

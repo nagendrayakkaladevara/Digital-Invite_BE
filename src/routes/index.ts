@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import aiRoutes from './ai';
+import feedbackRoutes from './feedback';
 
 const router = Router();
 
@@ -8,5 +9,6 @@ router.get('/', (_req, res) => {
 });
 
 router.use('/ai', aiRoutes);
+router.use('/feedback', feedbackRoutes);
 
 export default router;

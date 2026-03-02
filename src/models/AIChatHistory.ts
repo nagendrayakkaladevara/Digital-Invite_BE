@@ -1,4 +1,5 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
+import { ALL_MODELS } from '../config/models';
 
 export interface IAIChatHistory extends Document {
   question: string;
@@ -9,9 +10,9 @@ export interface IAIChatHistory extends Document {
 
 const AIChatHistorySchema = new Schema<IAIChatHistory>(
   {
-    question: { type: String, required: true },
-    response: { type: String, required: true },
-    aiModel: { type: String, required: true },
+    question: { type: String, required: true, maxlength: 2000 },
+    response: { type: String, required: true, maxlength: 100_000 },
+    aiModel: { type: String, required: true, enum: [...ALL_MODELS] },
   },
   { timestamps: true }
 );

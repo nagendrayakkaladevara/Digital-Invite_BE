@@ -11,7 +11,7 @@ const app = express();
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.ALLOWED_ORIGINS?.split(',') ?? '*',
+    origin: process.env.ALLOWED_ORIGINS?.split(',').map((o) => o.trim()) ?? '*',
     methods: ['GET', 'POST'],
   })
 );
@@ -35,6 +35,7 @@ app.get('/', (_req, res) => {
       health: 'GET /health',
       api: 'GET /api',
       aiChat: 'POST /api/ai/chat',
+      feedback: 'GET/POST /api/feedback',
     },
   });
 });
